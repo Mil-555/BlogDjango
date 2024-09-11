@@ -9,3 +9,5 @@ from blog.models import Post
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'author', 'publish', 'status')
     list_filter = ('status', 'created', 'publish', 'author')
+    prepopulated_fields = {'slug': ('title',)}
+    ordering = ('status', '-publish')
