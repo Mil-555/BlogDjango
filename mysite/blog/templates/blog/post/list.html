@@ -3,3 +3,11 @@
 {% block title %}
     Mój blog
 {% endblock %}
+
+{% block content %}
+    <h1>Mój blog</h1>
+    {% for post in posts %}
+        <h2>{{ post.title }}</h2>
+    {% endfor %}
+
+{% endblock %}
