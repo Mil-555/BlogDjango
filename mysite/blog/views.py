@@ -2,6 +2,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 
+from blog.forms import CommentForm
 from blog.models import Post
 
 
@@ -24,8 +25,19 @@ def post_detail(request, year, month, day, slug):
                              publish__year=year,
                              publish__month=month,
                              publish__day=day)
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+
+    else:
+        comment_form = CommentForm()
+
     return render(request, 'blog/post/detail.html',
-                  {'post': post,})
+                  {'post': post,
+                   'comment_form': comment_form})
 
 class PostListView(ListView):
     queryset = Post.objects.filter(status='published')
